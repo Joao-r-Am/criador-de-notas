@@ -1,50 +1,64 @@
 import React, { Component } from "react";
-import "./style.css"
-import "../../assets/app.css"
+import "./style.css";
+import "../../assets/app.css";
 
 class FormularioCadastro extends Component {
-  constructor(props){
+  constructor(props) {
     super(props);
-    this.titulo="";
-    this.texto="";
+    this.titulo = "";
+    this.texto = "";
+    this.categoria = "Sem categoria";
   }
-  
+
   _handleMudancaTitulo(evento) {
-    this.titulo = evento.target.value
+    this.titulo = evento.target.value;
   }
 
   _handleMudancaTexto(evento) {
-    this.texto = evento.target.value
+    this.texto = evento.target.value;
   }
 
   _criarNota(evento) {
     evento.preventDefault();
     evento.stopPropagation();
-    this.props.criarNota(this.titulo, this.texto);
+    this.props.criarNota(this.titulo, this.texto, this.categoria);
+  }
+
+  _handleMudancaCategoria(evento) {
+    evento.stopPropagation();
+    this.categoria = evento.target.value;
   }
 
   render() {
     return (
       <section>
-        <form 
-        className="form-cadastro" 
-        onSubmit={this._criarNota.bind(this)}
-        >
-          <input 
-          className="form-cadastro_input"
-          type="text" 
-          placeholder="Título"
-          onChange={this._handleMudancaTitulo.bind(this)}
+        <form className="form-cadastro" onSubmit={this._criarNota.bind(this)}>
+          <select
+            onChange={this._handleMudancaCategoria.bind(this)}
+            className="form-cadastro_input"
+          >
+            <option>Sem categoria</option>
+            {this.props.categorias.map((categoria) => {
+              return <option>{categoria}</option>;
+            })}
+          </select>
+          <input
+            className="form-cadastro_input"
+            type="text"
+            placeholder="Título"
+            onChange={this._handleMudancaTitulo.bind(this)}
           />
 
-          <textarea 
-          className="form-cadastro_input" 
-          rows={15}
-          placeholder="Escreva sua nota"
-          onChange={this._handleMudancaTexto.bind(this)}
+          <textarea
+            className="form-cadastro_input"
+            rows={15}
+            placeholder="Escreva sua nota"
+            onChange={this._handleMudancaTexto.bind(this)}
           />
 
-          <button className="form-cadastro_input form-cadastro_submit">Criar nota </button>
+          <button className="form-cadastro_input form-cadastro_submit">
+            Criar nota{" "}
+          </button>
         </form>
       </section>
     );
